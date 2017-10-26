@@ -38,18 +38,18 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will
      
   --------------------------------------------Main Menu-------------------------------------------
 						
-       					                           Exchange Scripts	      	       		 	
+       					   Exchange Scripts	      	       		 	
          
              		       1 = Add User to distribution group
              		       2 = Remove user from distribution group
-	     		             3 = Give user full access to another users mailbox
-	      		           4 = Remove full access rights to another users mailbox            
-	      		           5 = Create an out of office message for a user
-	      		           6 = Remove out of office message for a user
-	                 		 7 = Archiving user to pst
-   	     		           8 = Clear mailbox export queue
+	     		       3 = Give user full access to another users mailbox
+	      		       4 = Remove full access rights to another users mailbox            
+	      		       5 = Create an out of office message for a user
+	      		       6 = Remove out of office message for a user
+	                       7 = Archiving user to pst
+   	     		       8 = Clear mailbox export queue
              		       9 = Run exchange report to get mailbox sizes
-	     		             0 = Exit
+	     		       0 = Exit
                                     		
   -----------------------------------------------------------------------------------------------"
  	
@@ -66,18 +66,18 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will
         "1" {
        
          	 clear
-		       $prompt = read-host -prompt "This script will let you add a user to a distribution group. Do you want to continue? (Y/N)"		
+		 $prompt = read-host -prompt "This script will let you add a user to a distribution group. Do you want to continue? (Y/N)"		
         	 if ($prompt -eq 'y')
-                   {
-            	      	$identity = read-host -prompt "Enter distributiongroup "
-		 	                $user = read-host -prompt "Enter user you want to add into the group"      	 
-		 	                $c = Add-DistributionGroupMember -Identity $identity -Member $user
-         	 	          echo $c
-			                Write-Host -NoNewLine 'Press any key to continue...';
-		                  $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-		       else
-			                end
-		               }        	                 
+                  	 {
+            	      		 $identity = read-host -prompt "Enter distributiongroup "
+		 		 $user = read-host -prompt "Enter user you want to add into the group"      	 
+		 		 $c = Add-DistributionGroupMember -Identity $identity -Member $user
+         	        	 echo $c
+				 Write-Host -NoNewLine 'Press any key to continue...';
+		        	 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		   else
+				 end
+	            	}        	                 
             }
           
           #Number two allow you to remove a user from the distribution group.
@@ -85,39 +85,39 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will
 	    "2" {
        
          	 clear
-			     $prompt = read-host -prompt "This script will let you remove a user from a distribution group. Do you want to continue? (Y/N)"		
+		 $prompt = read-host -prompt "This script will let you remove a user from a distribution group. Do you want to continue? (Y/N)"		
         	 if ($prompt -eq 'y')
-		               {
-         		           $identity = read-host -prompt "Enter distributiongroup "
-			                 $user = read-host -prompt "Enter the user you want to remove from the group"      	 
-		 	                 $c = Remove-DistributionGroupMember -Identity $identity -Member $user
-         	        	   echo $c
-                       Write-Host -NoNewLine 'Press any key to continue...';
-		                   $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-		        else
-                       end
+		         {
+         		  	$identity = read-host -prompt "Enter distributiongroup "
+			        $user = read-host -prompt "Enter the user you want to remove from the group"      	 
+		 	        $c = Remove-DistributionGroupMember -Identity $identity -Member $user
+         	        	echo $c
+                       		Write-Host -NoNewLine 'Press any key to continue...';
+		                $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		   else
+                      		end
 
-		                }        	
-            }
+		          }        	
+            	}
      
         #Number three allows you to give a user full access permission to someone elses mailbox.
 	
 	    "3" {
        
          	 clear		
-		       $prompt = read-host -prompt "This script will give another user full access to someones mailbox. Do you want to continue? (Y/N)"		
+		 $prompt = read-host -prompt "This script will give another user full access to someones mailbox. Do you want to continue? (Y/N)"		
         	 if ($prompt -eq 'y')
-		               {
-         	          	 $identity = read-host -prompt "Enter the name of the user you want full access to "
-		                   $user = read-host -prompt "Enter the name of the user who wants to recieve the full access"      	 
-		 	                 $c = Add-MailboxPermission -Identity $identity -User $user -AccessRights FullAccess -InheritanceType All
-         	 	           echo $c
-                       Write-Host -NoNewLine 'Press any key to continue...';
-		 	                 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-		        else
-			                  end      
-		                }     
-            }
+		         {
+         	         	$identity = read-host -prompt "Enter the name of the user you want full access to "
+		                $user = read-host -prompt "Enter the name of the user who wants to recieve the full access"      	 
+		 	        $c = Add-MailboxPermission -Identity $identity -User $user -AccessRights FullAccess -InheritanceType All
+         	 	        echo $c
+                       		Write-Host -NoNewLine 'Press any key to continue...';
+		 	        $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		 else
+			        end      
+		         }     
+            	}
 
         #Number four removes full access permissions from a user.
 	
@@ -145,58 +145,58 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will
 	    "5" {
        
          	 clear	
-		       $prompt = read-host -prompt "This script will place an out of office message for a user. Do you want to continue? (Y/N)"		
+		 $prompt = read-host -prompt "This script will place an out of office message for a user. Do you want to continue? (Y/N)"		
         	 if ($prompt -eq 'y')
-		               {
-         	             $user = read-host -prompt "Enter the user you want to place the message for"	
-		                   $EMessage = read-host -prompt "Enter the message you want to place"		
-		                   $OOFMsg = [string]$EMessage #Converts the variable emessage into a string so that it can dispaly that. 
-	                     Set-MailboxAutoReplyConfiguration $user –AutoReplyState enabled –ExternalAudience all –ExternalMessage $OOFMsg –InternalMessage $OOFMsg	#Sets the autoreply state to enabled and sets the message to	
-		                   Write-Host -NoNewLine 'Press any key to continue...';                                                                                    #both internal and external emails
-		                   $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-		       else
-			                 end
-		               }    
-            }		
+		         {
+         	         	$user = read-host -prompt "Enter the user you want to place the message for"	
+		                $EMessage = read-host -prompt "Enter the message you want to place"		
+		                $OOFMsg = [string]$EMessage #Converts the variable emessage into a string so that it can dispaly that. 
+	                     	Set-MailboxAutoReplyConfiguration $user –AutoReplyState enabled –ExternalAudience all –ExternalMessage $OOFMsg –InternalMessage $OOFMsg	#Sets the autoreply state to enabled and sets the message to	
+		                Write-Host -NoNewLine 'Press any key to continue...';                                                                                    #both internal and external emails
+		                $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		 else
+			        end
+		          }    
+           	 }		
 
         #Number six lets you remove an out of office message for a user.
 
 	    "6" {
        
          	 clear	 
-		       $prompt = read-host -prompt "This script will remove an out of office message for a user. Do you want to continue? (Y/N)"		
+		 $prompt = read-host -prompt "This script will remove an out of office message for a user. Do you want to continue? (Y/N)"		
         	 if ($prompt -eq 'y')
-		               {
-		                  $user = read-host -prompt "Enter the user you want to remove the message for"
-         	            Set-MailboxAutoReplyConfiguration $user –AutoReplyState disabled
-                      Write-Host -NoNewLine 'Press any key to continue...';
-		                  $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-		       else
-			                end
-		                }  
-            }
+		         {
+		         	 $user = read-host -prompt "Enter the user you want to remove the message for"
+         	            	 Set-MailboxAutoReplyConfiguration $user –AutoReplyState disabled
+                     		 Write-Host -NoNewLine 'Press any key to continue...';
+		                 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		 else
+			        end
+		         }  
+           	 }
 
         #Number seven will archive a users mailbox to a .pst file and then store it in the location set. 
 	    	
 	    "7" {
        
          	 clear
-		       $prompt = read-host -prompt "This script will archive a users mailbox. Do you want to continue? (Y/N)"		
+		 $prompt = read-host -prompt "This script will archive a users mailbox. Do you want to continue? (Y/N)"		
         	 if ($prompt -eq 'y')
-		               {
-		                   $user = read-host -prompt "Enter the user you want to archive"
-                       New-MailboxExportRequest -Mailbox $user -FilePath \\C:\UserArchive\$user\$user.pst
-		                   $prompt = read-host -prompt "Would you like to see the progress? (Y/N)"		
-        	                 if ($prompt -eq 'y')
-                                  {
-            		                     $c | Get-MailboxExportRequest
+		         {
+		          	$user = read-host -prompt "Enter the user you want to archive"
+                       		New-MailboxExportRequest -Mailbox $user -FilePath \\C:\UserArchive\$user\$user.pst
+		                $prompt = read-host -prompt "Would you like to see the progress? (Y/N)"		
+        	                if ($prompt -eq 'y')
+                                 	{
+            		                 	$c | Get-MailboxExportRequest
 	                                }	 
-		                   Write-Host -NoNewLine 'Press any key to continue...';
-		                   $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-		       else
-			                 end
-		              }  
-            }
+		                 Write-Host -NoNewLine 'Press any key to continue...';
+		                 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		  else
+			         end
+		        }  
+            	}
 	
 	
 	    "8" {
@@ -204,10 +204,10 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will
         #Number eight will let you see the progress of the mailbox export. 
        
          	 clear	
-		       $Status = read-host -prompt "Pick an option, Completed, Failed or InProgress"
-		       Get-MailboxExportRequest | where {$_.status -eq $Status} | Remove-MailboxExportRequest		
-		       Write-Host -NoNewLine 'Press any key to continue...';
-		       $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		 $Status = read-host -prompt "Pick an option, Completed, Failed or InProgress"
+		 Get-MailboxExportRequest | where {$_.status -eq $Status} | Remove-MailboxExportRequest		
+		 Write-Host -NoNewLine 'Press any key to continue...';
+		 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
             }
 
@@ -217,11 +217,11 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will
         #Number nine will get the stats of the mailboxes you have on exchange. It will show the name of the box, the available space left and the whole database size. 
         #You can have as many mailboxes as you want. In this case I've put three.
          	 clear
-		       Get-MailboxDatabase Testbox1 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
-		       Get-MailboxDatabase Testbox2 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
-		       Get-MailboxDatabase Testbox3 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
-           Write-Host -NoNewLine 'Press any key to continue...';
-		       $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		 Get-MailboxDatabase Testbox1 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
+		 Get-MailboxDatabase Testbox2 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
+		 Get-MailboxDatabase Testbox3 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
+           	 Write-Host -NoNewLine 'Press any key to continue...';
+		 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
            
             }
 
@@ -232,11 +232,11 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will
              
                 #Delete temp variables used
 		
-		        Remove-Variable user -erroraction 'silentlycontinue'                  #The -erroraction 'silentlycontinue' blocks any errors from showing when terminating this script.
+	    Remove-Variable user -erroraction 'silentlycontinue'                  #The -erroraction 'silentlycontinue' blocks any errors from showing when terminating this script.
             Remove-Variable identity -erroraction 'silentlycontinue'              #The reason I put this in place is because if someone doesn't use for instance subscript 1 or 2
-		        Remove-Variable OOFMessage -erroraction 'silentlycontinue'            #When you run subscript 0, it will produce an error saying it can't find variable user. 
-		        Remove-Variable EMessage -erroraction 'silentlycontinue'              #Having the -erroraction stops this error from showing, giving a clean termination with no red errors appearing on your screen. 
-		        Remove-Variable Status -erroraction 'silentlycontinue'	
+	    Remove-Variable OOFMessage -erroraction 'silentlycontinue'            #When you run subscript 0, it will produce an error saying it can't find variable user. 
+	    Remove-Variable EMessage -erroraction 'silentlycontinue'              #Having the -erroraction stops this error from showing, giving a clean termination with no red errors appearing on your screen. 
+	    Remove-Variable Status -erroraction 'silentlycontinue'	
             Remove-Variable end -erroraction 'silentlycontinue'
             Remove-Variable setexit -erroraction 'silentlycontinue'
             Remove-Variable c -erroraction 'silentlycontinue'
