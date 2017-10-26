@@ -1,0 +1,252 @@
+#Created by Amanjot Karir
+#Last updated: 26/10/2017    
+
+#Import exchange into powershell
+
+$UserCredential = Get-Credential 'admin\test'  #This saves your username so you don't have to keep putting it in everytime you run this script. Change the text in the single quotation marks 
+$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri test.test.com/PowerShell/ -Authentication Kerberos -Credential $UserCredential #This will attempt to connect to your exchange server
+                                                                              #enter in the address of your exchange server where it says test.test.com above     
+
+Import-PSSession $Session  #Imports your exchange server session into powershell                                                                                                          
+Write-Host -NoNewLine 'Press any key to continue...';      #Stops the script from continuing on, so you can read the information shown on the screen
+$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');   #any key pressed will allow you to continue the script
+
+
+ 
+ #Below are the parameters that will be used in the script
+
+    $waitDuration = 2 #How long the information is shown via each subscript before it takes you back to the main menu
+    $end=0 #End variable
+    $pshost = get-host
+
+    $pswindow = $pshost.ui.rawui
+    $newsize = $pswindow.buffersize
+    $newsize.height = 3000              #This block of parameters is to adjust the size of the powershell window
+    $newsize.width = 240
+    $pswindow.buffersize = $newsize
+    $newsize = $pswindow.windowsize
+    $newsize.height = 50
+    $newsize.width = 100
+    $pswindow.windowsize = $newsize
+	
+    
+ :OuterLoop do
+    {            #Main script begins
+    Do {    
+    clear     
+    Write-Output "
+     
+  --------------------------------------------Main Menu-------------------------------------------
+						
+       					                           Exchange Scripts	      	       		 	
+         
+             		       1 = Add User to distribution group
+             		       2 = Remove user from distribution group
+	     		             3 = Give user full access to another users mailbox
+	      		           4 = Remove full access rights to another users mailbox            
+	      		           5 = Create an out of office message for a user
+	      		           6 = Remove out of office message for a user
+	                 		 7 = Archiving user to pst
+   	     		           8 = Clear mailbox export queue
+             		       9 = Run exchange report to get mailbox sizes
+	     		             0 = Exit
+                                    		
+  -----------------------------------------------------------------------------------------------"
+ 	
+       #Above is the main menu. You can add more items to the list.  
+	
+	$Choice = read-host -prompt "Select an Option and press Enter"
+       } until($Choice -eq "1" -or $Choice -eq "2" -or $Choice -eq "3" -or $Choice -eq "4" -or $Choice -eq "5" -or $Choice -eq "6" -or $Choice -eq "7" -or $Choice -eq "8" -or $Choice -eq "9" -or $Choice -eq "0")
+        #A hardcoded array. The numbers represent the options shown in the main menu. There is no limit on the number of options you can put into the array.
+       
+       Switch($Choice){
+	
+	#Number one allows you to enter in the name of the distribution group you want to add a user into. 
+     
+        "1" {
+       
+         	 clear
+		       $prompt = read-host -prompt "This script will let you add a user to a distribution group. Do you want to continue? (Y/N)"		
+        	 if ($prompt -eq 'y')
+                   {
+            	      	$identity = read-host -prompt "Enter distributiongroup "
+		 	                $user = read-host -prompt "Enter user you want to add into the group"      	 
+		 	                $c = Add-DistributionGroupMember -Identity $identity -Member $user
+         	 	          echo $c
+			                Write-Host -NoNewLine 'Press any key to continue...';
+		                  $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		       else
+			                end
+		               }        	                 
+            }
+          
+          #Number two allow you to remove a user from the distribution group.
+
+	    "2" {
+       
+         	 clear
+			     $prompt = read-host -prompt "This script will let you remove a user from a distribution group. Do you want to continue? (Y/N)"		
+        	 if ($prompt -eq 'y')
+		               {
+         		           $identity = read-host -prompt "Enter distributiongroup "
+			                 $user = read-host -prompt "Enter the user you want to remove from the group"      	 
+		 	                 $c = Remove-DistributionGroupMember -Identity $identity -Member $user
+         	        	   echo $c
+                       Write-Host -NoNewLine 'Press any key to continue...';
+		                   $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		        else
+                       end
+
+		                }        	
+            }
+     
+        #Number three allows you to give a user full access permission to someone elses mailbox.
+	
+	    "3" {
+       
+         	 clear		
+		       $prompt = read-host -prompt "This script will give another user full access to someones mailbox. Do you want to continue? (Y/N)"		
+        	 if ($prompt -eq 'y')
+		               {
+         	          	 $identity = read-host -prompt "Enter the name of the user you want full access to "
+		                   $user = read-host -prompt "Enter the name of the user who wants to recieve the full access"      	 
+		 	                 $c = Add-MailboxPermission -Identity $identity -User $user -AccessRights FullAccess -InheritanceType All
+         	 	           echo $c
+                       Write-Host -NoNewLine 'Press any key to continue...';
+		 	                 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		        else
+			                  end      
+		                }     
+            }
+
+        #Number four removes full access permissions from a user.
+	
+	    "4" {
+       
+         	 clear		
+		       $prompt = read-host -prompt "This script will remove someones full access to another persons mailbox. Do you want to continue? (Y/N)"		
+        	 if ($prompt -eq 'y')
+		               {
+         	             $identity = read-host -prompt "Enter the name of the user you want full access removed from "
+		                   $user = read-host -prompt "Enter the name of the user who needs full access taken away from them"      	 
+		                   $c = Remove-MailboxPermission -Identity $identity -User $user -AccessRights FullAccess -InheritanceType All
+         	             echo $c
+                       Write-Host -NoNewLine 'Press any key to continue...';
+		                   $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+	          else
+			                 end
+		                }    
+            }		
+
+        #Number five lets you place an out of office message for a user. This subscript contains some HTML for a better format. 
+        #If you want to add breaks in simply add in the following: "I will be out of the office until the 5/11/2017. <br><br> Thanks, <br> Amanjot
+        #The number of <br> you place in your message, the more spaces will follow. For instance one <br> shows one enter. Two <br><br> represents 2 enter keys.
+
+	    "5" {
+       
+         	 clear	
+		       $prompt = read-host -prompt "This script will place an out of office message for a user. Do you want to continue? (Y/N)"		
+        	 if ($prompt -eq 'y')
+		               {
+         	             $user = read-host -prompt "Enter the user you want to place the message for"	
+		                   $EMessage = read-host -prompt "Enter the message you want to place"		
+		                   $OOFMsg = [string]$EMessage #Converts the variable emessage into a string so that it can dispaly that. 
+	                     Set-MailboxAutoReplyConfiguration $user –AutoReplyState enabled –ExternalAudience all –ExternalMessage $OOFMsg –InternalMessage $OOFMsg	#Sets the autoreply state to enabled and sets the message to	
+		                   Write-Host -NoNewLine 'Press any key to continue...';                                                                                    #both internal and external emails
+		                   $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		       else
+			                 end
+		               }    
+            }		
+
+        #Number six lets you remove an out of office message for a user.
+
+	    "6" {
+       
+         	 clear	 
+		       $prompt = read-host -prompt "This script will remove an out of office message for a user. Do you want to continue? (Y/N)"		
+        	 if ($prompt -eq 'y')
+		               {
+		                  $user = read-host -prompt "Enter the user you want to remove the message for"
+         	            Set-MailboxAutoReplyConfiguration $user –AutoReplyState disabled
+                      Write-Host -NoNewLine 'Press any key to continue...';
+		                  $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		       else
+			                end
+		                }  
+            }
+
+        #Number seven will archive a users mailbox to a .pst file and then store it in the location set. 
+	    	
+	    "7" {
+       
+         	 clear
+		       $prompt = read-host -prompt "This script will archive a users mailbox. Do you want to continue? (Y/N)"		
+        	 if ($prompt -eq 'y')
+		               {
+		                   $user = read-host -prompt "Enter the user you want to archive"
+                       New-MailboxExportRequest -Mailbox $user -FilePath \\C:\UserArchive\$user\$user.pst
+		                   $prompt = read-host -prompt "Would you like to see the progress? (Y/N)"		
+        	                 if ($prompt -eq 'y')
+                                  {
+            		                     $c | Get-MailboxExportRequest
+	                                }	 
+		                   Write-Host -NoNewLine 'Press any key to continue...';
+		                   $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+		       else
+			                 end
+		              }  
+            }
+	
+	
+	    "8" {
+
+        #Number eight will let you see the progress of the mailbox export. 
+       
+         	 clear	
+		       $Status = read-host -prompt "Pick an option, Completed, Failed or InProgress"
+		       Get-MailboxExportRequest | where {$_.status -eq $Status} | Remove-MailboxExportRequest		
+		       Write-Host -NoNewLine 'Press any key to continue...';
+		       $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+
+            }
+
+	
+	    "9" {
+        
+        #Number nine will get the stats of the mailboxes you have on exchange. It will show the name of the box, the available space left and the whole database size. 
+        #You can have as many mailboxes as you want. In this case I've put three.
+         	 clear
+		       Get-MailboxDatabase Testbox1 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
+		       Get-MailboxDatabase Testbox2 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
+		       Get-MailboxDatabase Testbox3 –Status | select Name, AvailableNewMailboxSpace, DatabaseSize
+           Write-Host -NoNewLine 'Press any key to continue...';
+		       $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+           
+            }
+
+        #This final subscript will terminate the whole powershell script.
+
+        "0" {
+                Write-Output "Terminating"
+             
+                #Delete temp variables used
+		
+		        Remove-Variable user -erroraction 'silentlycontinue'                  #The -erroraction 'silentlycontinue' blocks any errors from showing when terminating this script.
+            Remove-Variable identity -erroraction 'silentlycontinue'              #The reason I put this in place is because if someone doesn't use for instance subscript 1 or 2
+		        Remove-Variable OOFMessage -erroraction 'silentlycontinue'            #When you run subscript 0, it will produce an error saying it can't find variable user. 
+		        Remove-Variable EMessage -erroraction 'silentlycontinue'              #Having the -erroraction stops this error from showing, giving a clean termination with no red errors appearing on your screen. 
+		        Remove-Variable Status -erroraction 'silentlycontinue'	
+            Remove-Variable end -erroraction 'silentlycontinue'
+            Remove-Variable setexit -erroraction 'silentlycontinue'
+            Remove-Variable c -erroraction 'silentlycontinue'
+            $end = 1
+            break OuterLoop
+            }
+       }
+       
+    } while ($end -ne 1)
+
+    #End of Exchange script :D
+
+		 
