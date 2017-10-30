@@ -32,4 +32,8 @@ Each script will prompt you for a confirmation before proceeding, to make sure y
 
 As you can see from the two images above, it will always give you a prompt.
 
+![8](https://user-images.githubusercontent.com/33063799/32181962-873e8aee-bd8d-11e7-8625-dbfcb06bf46f.PNG)
 
+To exit/end the script simply enter in 0. This will terminate it and take you back to a normal powershell session. 
+
+Happy administrating :)
